@@ -1,0 +1,163 @@
+# Multiple Regression: County level voting behavior in 2016 {#MultipleRegression}
+
+
+```{r }
+## Load data
+# load(path.expand("C:\\Users\\Ella\\Dropbox\\research\\statVizBook\\images_data\\countyData.Rda"))
+load(path.expand("/Users/mfoster1/Dropbox/research/statVizBook/images_data/countyData.Rda"))
+
+countyData$medianIncome1k <- countyData$medianIncome16/1000
+# countyData <- countyData %>% mutate(drugChg1980to2014.log = log(drugChg1980to2014), .after = drugChg1980to2014)
+countyData <- countyData %>% mutate(prcntUnemployed.log = log(prcntUnemployed), .after = prcntUnemployed)
+countyData <- countyData %>%
+  mutate(highOpioidDeaths_num = ifelse(drug2014 > 12.1, 1, 0), 
+         highOpioidDeaths = ifelse(drug2014 > 12.1, 
+                                  "high deaths from opioid overdose", "lower deaths from opioid overdose"), 
+         .after = drug2014)
+
+countyData <- countyData %>%
+  mutate(highCollege_num = ifelse(anyCollege > 50, 1, 0), 
+         highCollege = ifelse(anyCollege > 50, 
+                                  "majority attended college", "majority did not attend any college"), 
+         .after = anyCollege)
+
+countyData$drug2014.log <- log(countyData$drug2014)
+
+```
+
+
+This example introduces you to the package by demonstrating a regression surface in 3D with marginal effects shown. It will then connect the regression surface to the more familiar scatterplot with a regression line. The data shows county level demographics as they relate to the percent of the county that voted for Trump in 2016. This example will focus on the percent of the county that has completed some higher education, regardless of whether they completed a higher education degree and the percent of the county that is unemployed. 
+
+Consider the following estimated regression line, 
+
+\begin{align*}
+\hat{y} &= \hat{\beta}_1 x_1 + \hat{\beta}_0 \\
+\text{estimated % Trump vote} &= -0.534 * \text{% with higher education} + 90.913\\
+\end{align*}
+
+The corresponding scatterplot and regression line are visualized below. There is a clear negative relationship between the two variables. Increasing higher education experience in a county is associated with lower support for Trump in the 2016 election. 
+
+```{r fig.height= 3.5, fig.width =4.5, fig.align = "center"}
+p <- ggplot(countyData, aes(x = anyCollege, y = prcntGOP16)) +
+  geom_point(aes(text = countyState))+
+  geom_smooth(method = lm, color = "cyan2", linetype = "dashed" ) + theme_classic() +
+  labs(x = '% with higher education', 
+       y = '% vote for Trump 2016')
+# p
+ggplotly(p)
+```
+
+
+However, this only examines one possible relationship in the data. Unemployment would also be expected to have a relationship with the Trump vote. A multiple regression, which predicts a regression surface, can examine how both county level unemployment and education relate to support for Trump. This regression takes the form
+
+
+\begin{align*}
+\hat{y} &= \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + \hat{\beta}_0 \\
+\text{estimated % Trump vote} = & -0.781 * \text{% with higher education} - \\
+                                        & 16.727 * \text{logged % unemployed} + 130.274.
+\end{align*}
+
+
+## Regression results for the original and nested models
+
+The regression results for this model are created using the stargazer.dira() command in the DiRA package. Model 1 shows the regression results associated with the original multiple linear regression. The regression results for the nested model $$\text{estimated % Trump vote} = -0.534 * \text{% with higher education} + 90.913$$ are in Model 2.
+
+```{r, results = 'asis'}
+model.names <-  c("lm_multiple", "lm_y.predby.x1" )
+
+stargazer.dira(formula = prcntGOP16~ anyCollege +prcntUnemployed.log, data = countyData,
+               model.names = model.names, units.of.x1 = T , print.model.descriptions = F,
+               type = type,  keep.stat = c("n","aic", "adj.rsq", "f"),
+               star.cutoffs = c(0.05, 0.01, 0.001),
+               covariate.labels = c("% with higher education", "logged % unemployed","Constant"),
+               dep.var.caption = "% Trump vote in 2016"
+               )
+```
+
+
+## Regression visualization in 3D
+
+The image below is created using the add_3d.directions() command in the DiRA package. It shows:
+
+  - A scatterplot of counties measured by the percent of their population with higher education, the logged percent unemployment in each county, and the percent of the county that voted for Trump in 2016.
+  - The regression surface defined by Model 1.
+  - The marginal effect of each of the variables within Model 1 and Model 2. 
+  - Confidence intervals associated with the regression surface and the marginal effects of the variables in Model 1 and Model 2.
+  
+To interact with the 3D visual:
+
+  - Hover over points to see the county name and state.
+  - Click and drag on the graphic to rotate it.
+  - Click on items in the legend to remove specific parts of the image; click on that item again to put it back.
+  - To reset the image to its starting point, hover over the image and click on the house symbol (or reload the page).
+
+**Model 1**, $y \sim x_1 + x_2$, is shown with regression surface and a confidence interval surface. The marginal effects are shown in <span style="color: crimson;">red</span> and <span style="color: orange;">orange</span> lines. Hover over and spin the graphic to examine the effects described below. Since this section focuses on Model 1, you may want to remove the dashed light blue line representing Model 2 for the moment.
+
+  - The marginal effect of $x_1$ (% with higher education) in <span style="color: crimson;">red</span>, shows how much y (% Trump) changes when $x_2$ (log % unemployed) is held constant. In this model, the effect of % with higher education is strongly negative. Holding unemployment constant, counties with low education levels (~30\% with higher education) tend to have over 80\% of their voters vote for Trump. Those with high education levels (~80\% with higher education) tend to have less than 40\% of their voters vote for Trump.
+  -  The marginal effect of $x_2$ (log % unemployed) in <span style="color: orange;">orange</span>, shows how much y (% Trump) changes when $x_1$ (% with higher education) is held constant. In this model, the effect of % with higher education is also strongly negative holding education levels constant. That is, counties with higher unemployment tend to have lower rates of voting for Trump in 2016 *when* county education levels are controlled for. 
+  - In  this visualization, the marginal effect of $x_1$ ($x_2$) is shown holding $x_2$ ($x_1$) at its mean. The DiRA package defaults to holding all other covariates at their means, but any value could be chosen. The y-intercept for the marginal effect would change, but the slope would remain the same regardless of the value chosen.
+
+
+```{r }
+plot_ly(data = countyData, 
+              x = ~anyCollege,
+              y = ~prcntUnemployed.log,
+              z = ~prcntGOP16 ,text = ~countyState) %>%
+  add_markers(size = 1, 
+              name = "scatterplot of counties", 
+              color = I("black")) %>% 
+  add_3d.directions(model.names = model.names) %>%
+  layout( 
+    title = "\nCounty Vote for Trump by\n education & income",
+    scene = list(xaxis = list(title = '% with higher education'),
+                 yaxis = list(title = 'logged % unemployed'),
+                 zaxis = list(title = '% vote for Trump 2016')),
+    # width = 500, height = 500,
+    legend = list(font = list(size = 8))
+    )
+# 
+# multiple_turnout
+# saveWidget(multiple_turnout, "index.html")
+```
+
+## Examining the nested model in 2D
+
+```{r fig.height= 4.5, fig.width = 7.5}
+p <- plot_ly(data = countyData, 
+              x = ~anyCollege,
+              y = ~prcntUnemployed.log,
+              z = ~prcntGOP16,
+              text = ~countyState ) %>%
+  add_markers( ) %>%
+  layout( 
+    title = "\nCounty Vote for Trump by\n education & income",
+    scene = list(xaxis = list(title = '% with higher education'),
+                 yaxis = list(title = 'logged % unemployed'),
+                 zaxis = list(title = '% vote for Trump 2016')),
+    # width = 500, height = 500,
+    legend = list(font = list(size = 8))
+    ) 
+
+p %>% add_2d.directions(model.names) %>% 
+      add_annotations(
+        text = 'y ~ x1', x = 0.15, y = 1, yref = "paper",
+        xref = "paper", xanchor = "middle", yanchor = "top", showarrow = FALSE, font = list(size = 15)
+      ) %>% 
+      add_annotations(
+        text = 'x2 ~ x1', x = 0.85, y = 1, yref = "paper",
+        xref = "paper", xanchor = "middle", yanchor = "top", showarrow = FALSE, font = list(size = 15)
+      )
+
+```
+
+
+The image above is created using the add_2d.directions() command in the DiRA package. **Model 2**, $y \sim x_1$ is a nested model of Model 1 and only has one axis. This axis is shown with a <span style="color: aqua;background-color:black">light blue </span> dashed line, and it has a direction in the $x_1$, $x_2$ coordinate system defined by the best fit line for $x_2 \sim x_1$,   $$\text{logged % unemployed} = -0.534 * \text{% with higher education} + 90.913.$$
+
+You can (and should!) spin the 3D graphic to reflect the 2D images. The images are not identical because the 3D image has a perspective shift, but you can see that the 2D images are simply crossections of the 3D graphic. 
+
+Tips to improve the view:
+
+  - Focus on the light blue dashed line that represents Model 2 in the 3D graphic by removing the red and orange lines (click on the corresponding items in the legend).
+  - Click and drag from the top of the 3D plot to the bottom to see the top of the regression surface.
+  - Hover over individual scatterpoints in any of these images to see which state, district, and year the elections occurred in, and match the points in the 3D and 2D plots by the specific election they represent.
+
