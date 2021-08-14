@@ -69,11 +69,7 @@ This results in a rotation of the original axes defined by the relationship betw
 
 ## 3D regression visualization
 
-The image is created using the add_3d.directions() command in the DiRA package. It shows the marginal effect of each of the variables within the models above. 
-
-  - **Model 1**, $y \sim x_1 + x_2$, is shown with regression surface and a confidence interval surface. The marginal effects are shown in <span style="color: crimson;">red</span> and <span style="color: orange;">orange</span> lines.
-  - **Model 2**, $y \sim x_1$, shows a nested model, which only has one axis, shown in <span style="color: aqua; background-color: black">light blue</span> dashed line. 
-  - **Model 3**, $y \sim x_1 + x_2 \text{residuals}$, uses the same information as Model 1, but rotates the axis system. The axes are represented by the <span style="color: blue;">dark blue</span> and <span style="color: deepskyblue;">blue</span> lines. Note that the direction of the $x_1$ axis is identical to the $x_1$ axis of Model 2, and therefore appears *under* the dashed light blue line representing the marginal effect of $x_1$ in Model 2. The direction of $x_2$'s residuals are identical to the direction of $x_2$ in the original model, and appear *under* the orange marginal effect for the original model. Note that the DiRA package always uses the axis system defined by the original regression models. Although the axes for $x_1$ and $x_2\text{residuals}$ are not orthogonal to each other when plotted in the $x_1$, $x_2$ axis system, the observations in the data are orthogonal to each other when the $x_1$, $x_2\text{residuals}$ axis system is used.
+The image is created using the add_3d.directions() command in the DiRA package. 
 
 To interact with this visual:
 
@@ -81,6 +77,12 @@ To interact with this visual:
   - Click and drag on the graphic to rotate it.
   - Click on items in the legend to remove specific parts of the image; click on that item again to put it back.
   - To reset the image to its starting point, hover over the image and click on the house symbol at the top right.
+
+It shows the marginal effect of each of the variables within the models above. 
+
+  - **Model 1**, $y \sim x_1 + x_2$, is shown with regression surface and a confidence interval surface. The marginal effects are shown in <span style="color: crimson;">red</span> and <span style="color: orange;">orange</span> lines.
+  - **Model 2**, $y \sim x_1$, shows a nested model, which only has one axis, shown in <span style="color: aqua; background-color: black">light blue</span> dashed line. 
+  - **Model 3**, $y \sim x_1 + x_2 \text{residuals}$, uses the same information as Model 1, but rotates the axis system. The axes are represented by the <span style="color: blue;">dark blue</span> and <span style="color: deepskyblue;">blue</span> lines. Note that the direction of the $x_1$ axis is identical to the $x_1$ axis of Model 2, and therefore appears *under* the dashed light blue line representing the marginal effect of $x_1$ in Model 2. The direction of $x_2$'s residuals are identical to the direction of $x_2$ in the original model, and appear *under* the orange marginal effect for the original model. Note that the DiRA package always uses the axis system defined by the original regression models. Although the axes for $x_1$ and $x_2\text{residuals}$ are not orthogonal to each other when plotted in the $x_1$, $x_2$ axis system, the observations in the data are orthogonal to each other when the $x_1$, $x_2\text{residuals}$ axis system is used.
 
 
 ```{r }
