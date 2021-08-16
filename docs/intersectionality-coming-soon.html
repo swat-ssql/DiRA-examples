@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>EXAMPLE 4 Intersectionality (coming soon!) | Directional Regression Analysis &amp; the DiRA Package</title>
+  <meta name="description" content="Examples of how to perform Directional Regression Analyses using the DiRA package." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="EXAMPLE 4 Intersectionality (coming soon!) | Directional Regression Analysis &amp; the DiRA Package" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Examples of how to perform Directional Regression Analyses using the DiRA package." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="EXAMPLE 4 Intersectionality (coming soon!) | Directional Regression Analysis &amp; the DiRA Package" />
+  
+  <meta name="twitter:description" content="Examples of how to perform Directional Regression Analyses using the DiRA package." />
+  
+
+<meta name="author" content="Ella Foster-Molina" />
+
+
+<meta name="date" content="2021-08-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="CategoricalVar.html"/>
+<link rel="next" href="adding-explanatory-variables-coming-soon.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">DiRA Examples</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="1" data-path="MultipleRegression.html"><a href="MultipleRegression.html"><i class="fa fa-check"></i><b>1</b> Multiple Regression: County level voting behavior in 2016</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="MultipleRegression.html"><a href="MultipleRegression.html#regression-results-for-the-original-and-nested-models"><i class="fa fa-check"></i><b>1.1</b> Regression results for the original and nested models</a></li>
+<li class="chapter" data-level="1.2" data-path="MultipleRegression.html"><a href="MultipleRegression.html#regression-visualization-in-3d"><i class="fa fa-check"></i><b>1.2</b> Regression visualization in 3D</a></li>
+<li class="chapter" data-level="1.3" data-path="MultipleRegression.html"><a href="MultipleRegression.html#examining-the-nested-model-in-2d"><i class="fa fa-check"></i><b>1.3</b> Examining the nested model in 2D</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="interaction-terms-county-level-voting-behavior-in-2016.html"><a href="interaction-terms-county-level-voting-behavior-in-2016.html"><i class="fa fa-check"></i><b>2</b> Interaction Terms: County level voting behavior in 2016</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="interaction-terms-county-level-voting-behavior-in-2016.html"><a href="interaction-terms-county-level-voting-behavior-in-2016.html#regression-results-for-a-model-with-interaction-terms"><i class="fa fa-check"></i><b>2.1</b> Regression results for a model with interaction terms</a></li>
+<li class="chapter" data-level="2.2" data-path="interaction-terms-county-level-voting-behavior-in-2016.html"><a href="interaction-terms-county-level-voting-behavior-in-2016.html#d-changing-marginal-effects"><i class="fa fa-check"></i><b>2.2</b> 3D changing marginal effects</a></li>
+<li class="chapter" data-level="2.3" data-path="interaction-terms-county-level-voting-behavior-in-2016.html"><a href="interaction-terms-county-level-voting-behavior-in-2016.html#d-marginal-effects"><i class="fa fa-check"></i><b>2.3</b> 2D marginal effects</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="CategoricalVar.html"><a href="CategoricalVar.html"><i class="fa fa-check"></i><b>3</b> Categorical Data &amp; Rotated Models: Simulated hair data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="CategoricalVar.html"><a href="CategoricalVar.html#understanding-categorical-variables"><i class="fa fa-check"></i><b>3.1</b> Understanding categorical variables</a></li>
+<li class="chapter" data-level="3.2" data-path="CategoricalVar.html"><a href="CategoricalVar.html#directional-regression-results"><i class="fa fa-check"></i><b>3.2</b> Directional regression results</a></li>
+<li class="chapter" data-level="3.3" data-path="CategoricalVar.html"><a href="CategoricalVar.html#d-rotated-model"><i class="fa fa-check"></i><b>3.3</b> 3D rotated model</a></li>
+<li class="chapter" data-level="3.4" data-path="CategoricalVar.html"><a href="CategoricalVar.html#d-visuals"><i class="fa fa-check"></i><b>3.4</b> 2D visuals</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="intersectionality-coming-soon.html"><a href="intersectionality-coming-soon.html"><i class="fa fa-check"></i><b>4</b> Intersectionality (coming soon!)</a></li>
+<li class="chapter" data-level="5" data-path="adding-explanatory-variables-coming-soon.html"><a href="adding-explanatory-variables-coming-soon.html"><i class="fa fa-check"></i><b>5</b> Adding Explanatory Variables (coming soon!)</a></li>
+<li class="chapter" data-level="6" data-path="categoricalRotationSymmetries.html"><a href="categoricalRotationSymmetries.html"><i class="fa fa-check"></i><b>6</b> (Optional) Categorical Data &amp; Symmetries in Rotated models: Simulated hair data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="categoricalRotationSymmetries.html"><a href="categoricalRotationSymmetries.html#directional-regression-results-for-different-reference-categories"><i class="fa fa-check"></i><b>6.1</b> Directional regression results for different reference categories</a></li>
+<li class="chapter" data-level="6.2" data-path="categoricalRotationSymmetries.html"><a href="categoricalRotationSymmetries.html#d-rotated-models"><i class="fa fa-check"></i><b>6.2</b> 3D rotated models</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="categoricalNestedModels.html"><a href="categoricalNestedModels.html"><i class="fa fa-check"></i><b>7</b> (Optional) Subsetted Categorical Explanatory Variables &amp; Nested Models: Simulated hair data</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="categoricalNestedModels.html"><a href="categoricalNestedModels.html#directional-regression-results-1"><i class="fa fa-check"></i><b>7.1</b> Directional regression results</a></li>
+<li class="chapter" data-level="7.2" data-path="categoricalNestedModels.html"><a href="categoricalNestedModels.html#d-rotated-model-1"><i class="fa fa-check"></i><b>7.2</b> 3D rotated model</a></li>
+<li class="chapter" data-level="7.3" data-path="categoricalNestedModels.html"><a href="categoricalNestedModels.html#d-visuals-1"><i class="fa fa-check"></i><b>7.3</b> 2D visuals</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Directional Regression Analysis &amp; the DiRA Package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="intersectionality-coming-soon" class="section level1" number="4">
+<h1><span class="header-section-number">EXAMPLE 4</span> Intersectionality (coming soon!)</h1>
+<p>Directional Regression Analysis can also be used to improve our understanding of intersectionality. Intersectionality, after all, is just a direction in the regression surface. For example, a regression that has gender and race as explanatory variables might want to examine the slope of the regression surface in the direction between (male and black) and (female and white). This package provides the regression results including standard errors for this new direction, as well as visuals to understand it.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="CategoricalVar.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="adding-explanatory-variables-coming-soon.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/DrEllaSwat/DiRA-examples/edit/master/04-Intersectionality-as-a-Rotation.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/DrEllaSwat/DiRA-examples/blob/master/04-Intersectionality-as-a-Rotation.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

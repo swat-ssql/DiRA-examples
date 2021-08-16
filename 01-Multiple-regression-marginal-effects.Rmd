@@ -138,7 +138,7 @@ p %>% add_2d.directions(model.names) %>%
 
 The image above is created using the add_2d.directions() command in the DiRA package. **Model 2**, $y \sim x_1$ is a nested model of Model 1 and only has one axis. This axis is shown with a <span style="color: aqua;background-color:black">light blue </span> dashed line, and it has a direction in the $x_1$, $x_2$ coordinate system defined by the best fit line for $x_2 \sim x_1$,   $$\text{logged % unemployed} = -0.534 * \text{% with higher education} + 90.913.$$
 
-The intent of these 2D graphics are to show that the simple linear regression defines a direction in the multiple regression surface. By omitting a variable from the model, we end up modeling the change in $y$ produced by a *joint direction* between $x_1$ and $x_2$ in the regression surface.
+The intent of these 2D graphics are to show that the simple linear regression defines a direction in the multiple regression surface. By omitting $x_2$ from the model, we end up modeling the change in $y$ produced by a *joint direction* between $x_1$ and $x_2$ in the regression surface.
 
 You can (and should!) spin the 3D graphic to reflect the 2D images. The images are not identical because the 3D image has a perspective shift, but you can see that the 2D images are simply crossections of the 3D graphic. 
 
@@ -146,5 +146,5 @@ Tips to improve the view:
 
   - Focus on the light blue dashed line that represents Model 2 in the 3D graphic by removing the red and orange lines (click on the corresponding items in the legend).
   - Click and drag from the top of the 3D plot to the bottom to see the top of the regression surface.
-  - Hover over individual scatterpoints in any of these images to see which state, district, and year the elections occurred in, and match the points in the 3D and 2D plots by the specific election they represent.
+  - Hover over individual scatterpoints in any of these images to see which county and state the point represents.
 
