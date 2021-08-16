@@ -15,8 +15,11 @@ The core idea behind the DiRA package is that once you can visualize and interac
 
 This repo was initially generated from a bookdown template available here: https://github.com/jtr13/bookdown-template.
 
-Demo Video
-A demo video showing how to create a bookdown book following these instructions: http://bit.ly/fiveminutebookdown
+The command stargazer.dira() is built on Marek Hlavac's stargazer package.
 
-Additional features
-Please consult the official guide to bookdown: https://bookdown.org/yihui/bookdown
+ Hlavac, Marek (2018). stargazer: Well-Formatted Regression and Summary Statistics Tables.
+ R package version 5.2.2. https://CRAN.R-project.org/package=stargazer 
+ 
+ Code folding in the github page is enabled using J. Zobolas's package Rtemps.
+ 
+ Zobolas, J. (2020). Rtemps: R Templates for Reproducible Data Analyses. GitHub Repository. Retrieved from https://github.com/bblodfon/rtemps
