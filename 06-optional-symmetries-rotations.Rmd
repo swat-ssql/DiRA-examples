@@ -1,0 +1,112 @@
+
+# (Optional) Categorical Data & Symmetries in Rotated models: Simulated hair data {#categoricalRotationSymmetries}
+
+Example \@ref(CategoricalVar) showed how rotations in a regression model can allow you to show the change in the outcome variable in new directions. This is a deeper dive into that example, showing that the rotations can be reproduced by changing the reference category when working with categorical explanatory variables.
+
+Since the DiRA package currently requires that categorical variables be turned into a series of dummy/indicator variables, to change the reference category you will simply change which dummy/indicator variables are used in the regression model. The left hand image shows the representation of an explanatory variable when the reference category is nonbinary folk, and the right hand image shows the representation when the reference category is males.
+
+```{r fig.height = 3.5 , fig.width = 7.5, fig.align='center'}
+
+hair_female.male <- ggplot(data = hairData, aes(x = isFemale_num, y = isMale_num, color = gender)) +
+  geom_jitter(alpha = .3, height = .05, width = .05)+
+  scale_color_manual(values = c("pink","skyblue","purple")) + 
+  theme_classic()+
+  labs(x = "nonbinary vs female", y = "nonbinary vs male")
+
+hair_female.nonbinary <- ggplot(data = hairData, aes(x = isFemale_num, y = isNonbinary_num, color = gender)) +
+  geom_jitter(alpha = .3, height = .05, width = .05)+
+  scale_color_manual(values = c("pink","skyblue","purple")) + 
+  theme_classic()+
+  labs(x = "male vs female", y = "male vs nonbinary")
+
+ggarrange(hair_female.male,hair_female.nonbinary, nrow=1, common.legend = T)
+```
+
+## Directional regression results for different reference categories
+
+The first set of regression results are the same as the prior example, where the x1-axis is represented with the female category, and the x2-axis is represented with the male category. The reference category is nonbinary folk.
+
+
+```{r, results = 'asis'}
+model.names <-  c("lm_multiple", 
+                  "lm_new.direction" ) 
+
+stargazer.dira(formula = length~ isFemale_num+isMale_num, data = hairData, 
+               model.names = model.names, print.model.descriptions = F,
+               direction.start.x1 = 0, direction.end.x1 = 1, 
+               direction.start.x2 = 1, direction.end.x2 = 0,
+               units.of.x1 = T, 
+               type = type, 
+               keep.stat = c("n","aic", "adj.rsq", "f"),
+               star.cutoffs = c(0.05, 0.01, 0.001),
+               covariate.labels = c("nonbinary vs female", "nonbinary vs male", "male vs female",
+                                    "orthogonal to male v female", "Constant"),
+               dep.var.caption = "hair length")
+```
+
+The next set of regression results use the second axis system, where the x1-axis represents females, and the x2-axis represents nonbinary folk. The origin/reference category therefore represent males. There is a clear symmetry between the first set of regression results and the second. The third axis system, using nonbinary and male for the axes, would produce a similar symmetry.
+
+```{r, results = 'asis'}
+stargazer.dira(formula = length~ isFemale_num+isNonbinary_num, data = hairData, 
+               model.names = model.names, print.model.descriptions = F,
+               direction.start.x1 = 0, direction.end.x1 = 1, 
+               direction.start.x2 = 1, direction.end.x2 = 0, 
+               units.of.x1 = T, 
+               type = type, 
+               keep.stat = c("n","aic", "adj.rsq", "f"),
+               star.cutoffs = c(0.05, 0.01, 0.001),
+               covariate.labels = c("male vs female", "male vs nonbinary", "nonbinary vs female",
+                                    "orthogonal to nonbinary vs female", "Constant"),
+               dep.var.caption = "hair length")
+```
+
+
+
+
+## 3D rotated models
+
+The next images show the 3D regression surfaces associated with each of the two coordinate systems. The slopes of the marginal effects associated with each pairwise comparison in the gender variable are identical between the two regression surfaces. 
+
+
+```{r fig.height = 6.5 , fig.width = 8.5, fig.align='center'}
+
+plot_ly( ) %>%
+  add_markers(data = hairData, 
+              x = ~isFemale_num,
+              y = ~isMale_num,
+              z = ~length,
+              color = ~gender,
+              colors = c("pink", "skyblue", "purple"),
+              size = 1) %>% 
+  add_3d.directions(formula = length~ isFemale_num+isMale_num, data = hairData,
+                     model.names = model.names, define.constant.x1 =0 ,define.constant.x2 =0 ) %>%
+  layout( 
+    title = "\nSimulated hair length by\n gender",
+    scene = list(xaxis = list(title = 'female (0 = no, 1 = yes)'),
+                 yaxis = list(title = 'male (0 = no, 1 = yes)'),
+                 zaxis = list(title = 'hair length')),
+    legend = list(font = list(size = 8))
+  )
+```
+
+
+```{r fig.height = 6.5 , fig.width = 8.5, fig.align='center'}
+
+plot_ly( ) %>%
+  add_markers(data = hairData, 
+              x = ~isFemale_num,
+              y = ~isNonbinary_num,
+              z = ~length,
+              color = ~gender,
+              colors = c("pink", "skyblue", "purple"),
+              size = 1) %>% 
+  add_3d.directions(formula = length~ isFemale_num+isNonbinary_num, data = hairData,
+                     model.names = model.names, define.constant.x1 =0 ,define.constant.x2 =0 ) %>%
+  layout( 
+    title = "\nSimulated hair length by\n gender",
+    scene = list(xaxis = list(title = 'female (0 = no, 1 = yes)'),
+                 yaxis = list(title = 'male (0 = no, 1 = yes)'),
+                 zaxis = list(title = 'hair length')),
+    legend = list(font = list(size = 8))
+  )
+```

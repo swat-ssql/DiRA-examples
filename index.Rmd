@@ -6,7 +6,7 @@ site: bookdown::bookdown_site
 description: "Examples of how to perform Directional Regression Analyses using the DiRA package."
 ---
 
-# Overview
+# Overview {-}
 
 ```{r, setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, message =F, warning = F)
@@ -26,8 +26,6 @@ table, td, th {
 
 
 ```{r }
-
-# dira_functions path: ~/Dropbox/research/dira/dira_functions_2021-07-19.R
 library(htmlwidgets)
 library(stargazer)
 library(foreign)
@@ -35,15 +33,53 @@ library(broom)
 library(tidyverse)
 library(ggpubr)
 library(plotly)
-
-source("~/Dropbox/research/dira/dira_functions_2021-08-10.R")
-type <- "html"
 ```
 
 
 
 **Draft version, not for distribution. Please do not share this link.**
 
+```{r }
+source("functions_data/dira_functions.R")
+type <- "html"
+
+## Load data
+# load(path.expand("C:\\Users\\Ella\\Dropbox\\research\\statVizBook\\images_data\\countyData.Rda"))
+load(path.expand("functions_data/countyData.Rda"))
+
+countyData$medianIncome1k <- countyData$medianIncome16/1000
+# countyData <- countyData %>% mutate(drugChg1980to2014.log = log(drugChg1980to2014), .after = drugChg1980to2014)
+countyData <- countyData %>% mutate(prcntUnemployed.log = log(prcntUnemployed), .after = prcntUnemployed)
+countyData <- countyData %>%
+  mutate(highOpioidDeaths_num = ifelse(drug2014 > 12.1, 1, 0), 
+         highOpioidDeaths = ifelse(drug2014 > 12.1, 
+                                  "high deaths from opioid overdose", "lower deaths from opioid overdose"), 
+         .after = drug2014)
+
+countyData <- countyData %>%
+  mutate(highCollege_num = ifelse(anyCollege > 50, 1, 0), 
+         highCollege = ifelse(anyCollege > 50, 
+                                  "majority attended college", "majority did not attend any college"), 
+         .after = anyCollege)
+
+countyData$drug2014.log <- log(countyData$drug2014)
+
+
+blackturnout <- read.csv("functions_data/blackturnout.csv")
+
+blackturnout <- blackturnout %>% 
+  mutate(black.candidate = ifelse(candidate == 1, 
+                                 yes = "Black candidate\nin election", "No Black candidate\nin election"), 
+         .after = candidate) %>% 
+  unite(candidate_district, c("state","district", "year"), sep = " ", remove = F) %>%
+  rename(prcnt.black.turnout = turnout, black.candidate_num = candidate, prcnt.black.voters = CVAP) %>%
+  mutate(prcnt.black.turnout = 100*prcnt.black.turnout, prcnt.black.voters = 100*prcnt.black.voters)
+# blackturnout <- blackturnout %>% sample_n(30)
+
+
+hairData <-read.csv("functions_data/efm_hair.csv")
+# hairData <-read.csv("C:\\Users\\Ella\\Dropbox\\research\\statVizBook\\efm_hair.csv")
+```
 
 This document overviews some ways to use the Directional Regression Analysis package. Consider a multiple linear regression surface defined by 
 
@@ -51,7 +87,17 @@ This document overviews some ways to use the Directional Regression Analysis pac
 \hat{y} = \hat{\beta}_1 x_1 +  \hat{\beta}_2 x_2 + \hat{\beta}_3 x_3 + ... +  \hat{\beta}_n x_n +  \hat{\beta}_0.
 \end{align*}
 
-Many commonly examined nested models within that multiple regression are simply directions in the regression surface. These directions can be usefully analyzed by creating a new axis system that is a rotation of the original axis system. 
+The core idea behind the DiRA package is that once you can visualize and interact with a regression surface in 3D, you can productively examine and interpret directions within the regression surface. The DiRA package specifically allows you to:
+  
+  - Visualize a regression surface and confidence intervals for a model of the form $y \sim x_1 + x_2$ or  $y \sim x_1 + x_2 + x_1 * x_2$.
+  - Visualize the scatterplot of observations measured by $y$, $x_1$, and $x_2$ along with the regression surface.
+  - Visualize regression surfaces estimated from a categorical explanatory variable with three categories.
+  - Visualize specifics directions in a regression surface, including 
+      + The marginal effects and confidence intervals of $x_1$ and $x_2$ in the regression surface.
+      + The direction defined by an omitted variable model, which is a type of nested model, $y \sim x_1$ or $y \sim x_2$. This direction can show the confidence intervals associated with the nested model. 
+      + Any rotations of the original model. This is useful for examining the confidence intervals associated with the regression surface for the direction defined by a nested model. It is also useful for examining all possible pairwise comparisons for a 3 level categorical variable, examining intersectionality from 2 categorical variables, or for examining principal component directions.  
+  - Concisely view the estimated effect and standard errors of the original regression model, as well as any nested or rotated versions of the original regression model.
+
 
 These are the core commands for performing these analyses. Additional details about options available for these commands is available at (put link here).
 

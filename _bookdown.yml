@@ -5,4 +5,4 @@ edit: https://github.com/DrEllaSwat/DiRA-examples/edit/master/%s
 view: https://github.com/DrEllaSwat/DiRA-examples/blob/master/%s
 language:
   ui:
-    chapter_name: "Chapter "
+    chapter_name: !expr function(i) paste0('EXAMPLE ', i)

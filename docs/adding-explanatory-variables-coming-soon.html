@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Directional Regression Analysis &amp; the DiRA Package</title>
+  <title>EXAMPLE 5 Adding Explanatory Variables (coming soon!) | Directional Regression Analysis &amp; the DiRA Package</title>
   <meta name="description" content="Examples of how to perform Directional Regression Analyses using the DiRA package." />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Directional Regression Analysis &amp; the DiRA Package" />
+  <meta property="og:title" content="EXAMPLE 5 Adding Explanatory Variables (coming soon!) | Directional Regression Analysis &amp; the DiRA Package" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Directional Regression Analysis &amp; the DiRA Package" />
+  <meta name="twitter:title" content="EXAMPLE 5 Adding Explanatory Variables (coming soon!) | Directional Regression Analysis &amp; the DiRA Package" />
   
   <meta name="twitter:description" content="Examples of how to perform Directional Regression Analyses using the DiRA package." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="MultipleRegression.html"/>
+<link rel="prev" href="intersectionality-coming-soon.html"/>
+<link rel="next" href="categoricalRotationSymmetries.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -132,158 +132,15 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Directional Regression Analysis &amp; the DiRA Package</h1>
-<p class="author"><em>Ella Foster-Molina</em></p>
-<p class="date"><em>2021-08-16</em></p>
-</div>
-<div id="overview" class="section level1 unnumbered">
-<h1>Overview</h1>
-<style type="text/css">
-table, td, th {
-  border: none;
-  padding-left: 1em;
-  padding-right: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-</style>
-<p><strong>Draft version, not for distribution. Please do not share this link.</strong></p>
-<p>This document overviews some ways to use the Directional Regression Analysis package. Consider a multiple linear regression surface defined by</p>
-<p><span class="math display">\[\begin{align*}
-\hat{y} = \hat{\beta}_1 x_1 +  \hat{\beta}_2 x_2 + \hat{\beta}_3 x_3 + ... +  \hat{\beta}_n x_n +  \hat{\beta}_0.
-\end{align*}\]</span></p>
-<p>The core idea behind the DiRA package is that once you can visualize and interact with a regression surface in 3D, you can productively examine and interpret directions within the regression surface. The DiRA package specifically allows you to:</p>
-<ul>
-<li>Visualize a regression surface and confidence intervals for a model of the form <span class="math inline">\(y \sim x_1 + x_2\)</span> or <span class="math inline">\(y \sim x_1 + x_2 + x_1 * x_2\)</span>.</li>
-<li>Visualize the scatterplot of observations measured by <span class="math inline">\(y\)</span>, <span class="math inline">\(x_1\)</span>, and <span class="math inline">\(x_2\)</span> along with the regression surface.</li>
-<li>Visualize regression surfaces estimated from a categorical explanatory variable with three categories.</li>
-<li>Visualize specifics directions in a regression surface, including
-<ul>
-<li>The marginal effects and confidence intervals of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> in the regression surface.</li>
-<li>The direction defined by an omitted variable model, which is a type of nested model, <span class="math inline">\(y \sim x_1\)</span> or <span class="math inline">\(y \sim x_2\)</span>. This direction can show the confidence intervals associated with the nested model.</li>
-<li>Any rotations of the original model. This is useful for examining the confidence intervals associated with the regression surface for the direction defined by a nested model. It is also useful for examining all possible pairwise comparisons for a 3 level categorical variable, examining intersectionality from 2 categorical variables, or for examining principal component directions.<br />
-</li>
-</ul></li>
-<li>Concisely view the estimated effect and standard errors of the original regression model, as well as any nested or rotated versions of the original regression model.</li>
-</ul>
-<p>These are the core commands for performing these analyses. Additional details about options available for these commands is available at (put link here).</p>
-<ul>
-<li>stargazer.dira(formula, data, model.names, data.subsets)
-<ul>
-<li>Takes a formula, dataset, a vector of model names, and any subsets of the data needed. Additional options are available.</li>
-<li>Outputs a pretty summary of the rotated and nested models defined in <em>model.names</em>. The first two explanatory variables in the formula are used to create the nests and rotations.</li>
-</ul></li>
-<li>models.dira(formula, data, model.names, data.subsets)
-<ul>
-<li>Takes a formula, dataset, a vector of model names, and any subsets of the data needed. Additional options are available.</li>
-<li>Creates a named list of rotated and nested linear models. You can examine the models within that list in more depth using tools like glance.dira() and tidy.dira(), or extract individual models to evaluate separately.</li>
-</ul></li>
-<li>glance.dira(dira_models)
-<ul>
-<li>Takes a named list of models created by models.dira()</li>
-<li>Outputs a tidy overview of each model’s statistics</li>
-</ul></li>
-<li>tidy.dira(dira_models)
-<ul>
-<li>Takes a named list of models created by models.dira()</li>
-<li>Outputs a tidy overview of the coefficients in each model</li>
-</ul></li>
-<li>add_3d.directions(plotly_object, model.names, data.subsets)
-<ul>
-<li>Takes a plotly object and a vector of model names, as well as additional options.</li>
-<li>Outputs an interactive 3D plot showing the regression surface as well as all specified nested and rotated models. The command requires x, y, and z variables and a dataset, which can be defined in the main plotly object or within add_3d.directions. The default regression surface is defined by <span class="math inline">\(z \sim x + y\)</span>, but interaction term models are also accepted.</li>
-</ul></li>
-<li>add_2d.directions(plotly_object, model.names, data.subsets)
-<ul>
-<li>Takes a plotly object and a vector of model names, as well as additional options.</li>
-<li>Outputs a graphic with 2-4 2D subplots showing the nested models and rotated models projected into 2D plots. The command requires x, y, and z variables and a dataset, which can be defined in the main plotly object or within add_2d.directions(). The default regression surface is defined by <span class="math inline">\(z \sim x + y\)</span>, but interaction term models are also accepted. Note: The graphics object generated by add_2d.directions cannot be modified by the layout command, although plotly object inputted can include a layout layer. The annotate() command can add annotations to the graphics object. Not all models can be plotted in 2D at the moment.</li>
-</ul></li>
-<li>plotlist.2d(plotly_object, model.names, data.subsets)
-<ul>
-<li>Takes a plotly object and a vector of model names, as well as additional options. The command requires x, y, and z variables and a dataset, which can be defined in the main plotly object or within plotlist.2d(). The default regression surface is defined by <span class="math inline">\(z \sim x + y\)</span>, but interaction term models are also accepted. Not all models can be plotted in 2D at the moment.</li>
-<li>Outputs a list of 2D graphics showing crosssections of the 3D graphic created by add_3d.directions. You can extract individual plots to use as needed.</li>
-</ul></li>
-</ul>
-<p>It is currently possible to examine the following nested and rotated models of the multiple linear regression surface. It is also possible to show directional symmetries between the nested and original models for categorical explanatory variables by applying a nested model the original data subsetted to only include one or two of the categories.</p>
-<table>
-<colgroup>
-<col width="19%" />
-<col width="22%" />
-<col width="21%" />
-<col width="20%" />
-<col width="16%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>model</th>
-<th align="center">model name</th>
-<th align="center">direction of first axis</th>
-<th align="center">direction of second axis</th>
-<th align="right">line color(s)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>y ~ x1 + x2</td>
-<td align="center">lm_multiple</td>
-<td align="center">x1</td>
-<td align="center">x2</td>
-<td align="right">red &amp; orange</td>
-</tr>
-<tr class="even">
-<td>y ~ x1</td>
-<td align="center">lm_y.predby.x1</td>
-<td align="center">x2 predicted by x1</td>
-<td align="center"></td>
-<td align="right">light blue</td>
-</tr>
-<tr class="odd">
-<td>y ~ x1 + x2 residuals</td>
-<td align="center">lm_y.predby.x1.w.resids</td>
-<td align="center">x2 predicted by x1</td>
-<td align="center">residuals of x2</td>
-<td align="right">dark blue &amp; blue</td>
-</tr>
-<tr class="even">
-<td>y ~ x2</td>
-<td align="center">lm_y.predby.x2</td>
-<td align="center">x1 predicted by x2</td>
-<td align="center"></td>
-<td align="right">fuchsia</td>
-</tr>
-<tr class="odd">
-<td>y ~ x2 + x1 residuals</td>
-<td align="center">lm_y.predby.x2.w.resids</td>
-<td align="center">x1 predicted by x2</td>
-<td align="center">residuals of x1</td>
-<td align="right">purple &amp; pink</td>
-</tr>
-<tr class="even">
-<td>y ~ PC1</td>
-<td align="center">lm_pc</td>
-<td align="center">first principal component</td>
-<td align="center"></td>
-<td align="right">light grey</td>
-</tr>
-<tr class="odd">
-<td>y ~ PC1 + PC2</td>
-<td align="center">lm_pc.w.orth</td>
-<td align="center">first principal component</td>
-<td align="center">orthogonal to first axis</td>
-<td align="right">black &amp; grey</td>
-</tr>
-<tr class="even">
-<td>y ~ new.dir + orth</td>
-<td align="center">lm_new.direction</td>
-<td align="center">user defined direction</td>
-<td align="center">orthogonal to first axis</td>
-<td align="right">green &amp; lime green</td>
-</tr>
-</tbody>
-</table>
+<div id="adding-explanatory-variables-coming-soon" class="section level1" number="5">
+<h1><span class="header-section-number">EXAMPLE 5</span> Adding Explanatory Variables (coming soon!)</h1>
+<p>This example shows what happens to the regression model when additional explanatory variable are included. Using rotations of the original model allows you to replicate the coefficients from a nested model. There are two benefits to using rotations instead of dropping variables to create nested models.</p>
+<ol style="list-style-type: decimal">
+<li>The standard error for the marginal effect of the rotated axes tends to be more precise than the standard error attached to that axis on a nested model.</li>
+<li>Using the rotation allows you to control for all variables in the model instead of “biasing” them by creating a joint direction between those omitted variable(s) and the included variables.</li>
+</ol>
+<p>In particular, for any new coefficient <span class="math inline">\(x_i\)</span>, the coefficient on <span class="math inline">\(x_i\)</span> in the estimated regression surface is interpreted as the marginal effect holding all other variables constant including <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>. The interpretation of the coefficient on <span class="math inline">\(x_i\)</span> remains the same for any model that uses a rotation of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>. This stands in contrast to nested models, because dropping a variable produces a joint direction between all coefficients and the excluded variable(s), not just the joint change for two variables. That is, nested models give you flexibility in the direction you want to examine the changes in <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>. Rotated models allow the same flexibility and more, while still controlling for all variables in the original model.</p>
+<p>The data in this example shows…</p>
 
 </div>
             </section>
@@ -291,8 +148,8 @@ table, td, th {
           </div>
         </div>
       </div>
-
-<a href="MultipleRegression.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="intersectionality-coming-soon.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="categoricalRotationSymmetries.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -324,7 +181,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/DrEllaSwat/DiRA-examples/edit/master/index.Rmd",
+"link": "https://github.com/DrEllaSwat/DiRA-examples/edit/master/05-Additional-Explanatory-Variables.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -332,7 +189,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/DrEllaSwat/DiRA-examples/blob/master/index.Rmd",
+"link": "https://github.com/DrEllaSwat/DiRA-examples/blob/master/05-Additional-Explanatory-Variables.Rmd",
 "text": null
 },
 "download": null,

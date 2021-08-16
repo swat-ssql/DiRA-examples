@@ -1,38 +1,23 @@
 # Multiple Regression: County level voting behavior in 2016 {#MultipleRegression}
 
+The primary functionality of the DiRA package is to show regression surfaces in 3 dimensions. This allows you to 
 
-```{r }
-## Load data
-# load(path.expand("C:\\Users\\Ella\\Dropbox\\research\\statVizBook\\images_data\\countyData.Rda"))
-load(path.expand("/Users/mfoster1/Dropbox/research/statVizBook/images_data/countyData.Rda"))
+  - Better understand marginal effects by visualizing what it means to hold other covariates in the model constant. 
+  - Visualize the *direction* of a nested model (also called an omitted variable model) in the 3 dimensional regression surface. 
+  - See the regression results for the regression surface and the nested model in a convenient form.
 
-countyData$medianIncome1k <- countyData$medianIncome16/1000
-# countyData <- countyData %>% mutate(drugChg1980to2014.log = log(drugChg1980to2014), .after = drugChg1980to2014)
-countyData <- countyData %>% mutate(prcntUnemployed.log = log(prcntUnemployed), .after = prcntUnemployed)
-countyData <- countyData %>%
-  mutate(highOpioidDeaths_num = ifelse(drug2014 > 12.1, 1, 0), 
-         highOpioidDeaths = ifelse(drug2014 > 12.1, 
-                                  "high deaths from opioid overdose", "lower deaths from opioid overdose"), 
-         .after = drug2014)
+The data used in this example shows county level demographics as they relate to the percent of the county that voted for Trump in 2016. The variables used in the multiple regression model are as follows. 
 
-countyData <- countyData %>%
-  mutate(highCollege_num = ifelse(anyCollege > 50, 1, 0), 
-         highCollege = ifelse(anyCollege > 50, 
-                                  "majority attended college", "majority did not attend any college"), 
-         .after = anyCollege)
-
-countyData$drug2014.log <- log(countyData$drug2014)
-
-```
+  - **Outcome variable**: The percent of the county's voters that voted for Donald Trump in 2016. 
+  - **Explanatory variable**: The percent of the county that has completed some higher education, regardless of whether they completed a higher education degree.
+  - **Explanatory variable**: The log of the percent of the county that is unemployed. 
 
 
-This example introduces you to the package by demonstrating a regression surface in 3D with marginal effects shown. It will then connect the regression surface to the more familiar scatterplot with a regression line. The data shows county level demographics as they relate to the percent of the county that voted for Trump in 2016. This example will focus on the percent of the county that has completed some higher education, regardless of whether they completed a higher education degree and the percent of the county that is unemployed. 
-
-Consider the following estimated regression line, 
+This example will start with a simple linear regression, the connect that simple linear regression to a multiple regression. The equation for the simple linear regression is
 
 \begin{align*}
 \hat{y} &= \hat{\beta}_1 x_1 + \hat{\beta}_0 \\
-\text{estimated % Trump vote} &= -0.534 * \text{% with higher education} + 90.913\\
+\text{estimated % Trump vote} &= -0.534 * \text{% with higher education} + 90.913.\\
 \end{align*}
 
 The corresponding scatterplot and regression line are visualized below. There is a clear negative relationship between the two variables. Increasing higher education experience in a county is associated with lower support for Trump in the 2016 election. 
@@ -152,6 +137,8 @@ p %>% add_2d.directions(model.names) %>%
 
 
 The image above is created using the add_2d.directions() command in the DiRA package. **Model 2**, $y \sim x_1$ is a nested model of Model 1 and only has one axis. This axis is shown with a <span style="color: aqua;background-color:black">light blue </span> dashed line, and it has a direction in the $x_1$, $x_2$ coordinate system defined by the best fit line for $x_2 \sim x_1$,   $$\text{logged % unemployed} = -0.534 * \text{% with higher education} + 90.913.$$
+
+The intent of these 2D graphics are to show that the simple linear regression defines a direction in the multiple regression surface. By omitting a variable from the model, we end up modeling the change in $y$ produced by a *joint direction* between $x_1$ and $x_2$ in the regression surface.
 
 You can (and should!) spin the 3D graphic to reflect the 2D images. The images are not identical because the 3D image has a perspective shift, but you can see that the 2D images are simply crossections of the 3D graphic. 
 

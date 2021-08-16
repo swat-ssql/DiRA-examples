@@ -1,0 +1,3 @@
+# Intersectionality (coming soon!)
+
+Directional Regression Analysis can also be used to improve our understanding of intersectionality. Intersectionality, after all, is just a direction in the regression surface. For example, a regression that has gender and race as explanatory variables might want to examine the slope of the regression surface in the direction between (male and black) and (female and white). This package provides the regression results including standard errors for this new direction, as well as visuals to understand it. 

@@ -1,17 +1,16 @@
 # Interaction Terms: County level voting behavior in 2016
 
-This example highlights a regression surface estimated from a model with an interaction term. The regression examines the relationship between: 
+Interaction terms in multiple regressions introduce an element of nonlinearity to the regression surface. This nonlinearity can make the model difficult to interpret. The visualizations available in the DiRA package are designed to help facilitate interpretation. 
+
+This example highlights a regression surface estimated from a model with an interaction term where the slope of the marginal effects not only change substantially based on the value of the other covariate in the model, but also flip signs. The regression examines the relationship between: 
 
   - **Outcome variable**: The percent of the county's voters that voted for Donald Trump in 2016. 
   - **Explanatory variable**: The logged opioid overdosed death rate in 2014, where the original opioid overdose death rate is measured in deaths per 100,000 people. 
-  - **Explanatory variable**: A binary variable that is true/1 if a majority of the adults in the county had attended college in 2016, whether or not they attained a degree. It is false/0 otherwise. 
-
-Interaction terms in multiple regressions introduce an element of nonlinearity to the regression surface, although the marginal effects of each variable retain a linear relationship with the outcome variable. The following description highlights both the nonlinear, linearity, and relationship between the regression surface and regression lines predicted by $y \sim x_1$ for subsets of the data that isolate to one of the binary values for the college attendance variable. The second explanatory variable is binary for ease of interpretation and to show the relationship between the regression surface and the nested models applied to subsets of the data.
-
+  - **Explanatory variable**: A binary variable that is true/1 if a majority of the adults in the county had attended college in 2016, whether or not they attained a degree. It is false/0 otherwise. This variable is binary for ease of interpretation and to show the relationship between the regression surface and the nested models applied to subsets of the data.
 
 ## Regression results for a model with interaction terms
 
-Consider the following estimated regression line, 
+Consider the following estimated regression surface, 
 
 \begin{align*}
 \hat{y} =& \hat{\beta}_1 x_1 +\hat{\beta}_2 x_2 +\hat{\beta}_{12} x_1 x_2 +  \hat{\beta}_0 \\
@@ -21,7 +20,7 @@ Consider the following estimated regression line,
 \end{align*}
 
 
-The regression results for this model are created using the stargazer.dira() command in the DiRA package. Model 1 shows the regression results associated with the original multiple linear regression. The regression results for the nested model using only the subset of the data with low opioid overdose deaths ($x_2 = 0$) are in Model 2, and the results where opioid overdose deaths are high are in Model 3.
+The regression results for this model are created using the stargazer.dira() command in the DiRA package. Model 1 shows the regression results associated with the original multiple linear regression. Model 2 shows the regression results for the nested model using only the subset of the data with low opioid overdose deaths ($x_2 = 0$), while Model 3 shows the results where opioid overdose deaths are high.
 
 All coefficients are statistically significant. However, the original model is difficult to interpret directly. It is easy but erroneous to interpret the logged opioid death rate coefficient of 6.652 in Model 1 as positive regardless of the value of the college attendance variable. However, the logged opioid death rate coefficient is only positive and 6.652 when the $x_2$ variable is zero, which is when the majority of the county did not attend college. When the majority of the county does attend college, the marginal effect of the logged opioid death rate becomes strongly negative. This is evident in the results from Models 2 and 3, where the logged opioid death rate flips direction between low and high education counties.
 
