@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Directional Regression Analysis &amp; the DiRA Package</title>
+  <title>Visualizing &amp; Interpreting Regression Surfaces with the DiRA Package</title>
   <meta name="description" content="Examples of how to perform Directional Regression Analyses using the DiRA package." />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Directional Regression Analysis &amp; the DiRA Package" />
+  <meta property="og:title" content="Visualizing &amp; Interpreting Regression Surfaces with the DiRA Package" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Directional Regression Analysis &amp; the DiRA Package" />
+  <meta name="twitter:title" content="Visualizing &amp; Interpreting Regression Surfaces with the DiRA Package" />
   
   <meta name="twitter:description" content="Examples of how to perform Directional Regression Analyses using the DiRA package." />
   
@@ -925,7 +925,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Directional Regression Analysis &amp; the DiRA Package</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Visualizing &amp; Interpreting Regression Surfaces with the DiRA Package</a>
           </h1>
         </div>
 
@@ -934,7 +934,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">Directional Regression Analysis &amp; the DiRA Package</h1>
+<h1 class="title">Visualizing &amp; Interpreting Regression Surfaces with the DiRA Package</h1>
 <p class="author"><em>Ella Foster-Molina</em></p>
 <p class="date"><em>2021-08-16</em></p>
 </div>
@@ -952,11 +952,7 @@ table, td, th {
 }
 </style>
 <p><strong>Draft version, not for distribution. Please do not share this link.</strong></p>
-<p>This document overviews some ways to use the Directional Regression Analysis package. Consider a multiple linear regression surface defined by</p>
-<p><span class="math display">\[\begin{align*}
-\hat{y} = \hat{\beta}_1 x_1 +  \hat{\beta}_2 x_2 + \hat{\beta}_3 x_3 + ... +  \hat{\beta}_n x_n +  \hat{\beta}_0.
-\end{align*}\]</span></p>
-<p>The core idea behind the DiRA package is that once you can visualize and interact with a regression surface in 3D, you can productively examine and interpret directions within the regression surface. The DiRA package specifically allows you to:</p>
+<p>The core idea behind the Directional Regression Analysis (DiRA) package is that once you can visualize and interact with a regression surface in 3D, you can productively examine and interpret directions within the regression surface. The DiRA package specifically allows you to:</p>
 <ul>
 <li>Visualize a regression surface and confidence intervals for a model of the form <span class="math inline">\(y \sim x_1 + x_2\)</span> or <span class="math inline">\(y \sim x_1 + x_2 + x_1 * x_2\)</span>.</li>
 <li>Visualize the scatterplot of observations measured by <span class="math inline">\(y\)</span>, <span class="math inline">\(x_1\)</span>, and <span class="math inline">\(x_2\)</span> along with the regression surface.</li>
@@ -968,7 +964,7 @@ table, td, th {
 <li>Any rotations of the original model. This is useful for examining the confidence intervals associated with the regression surface for the direction defined by a nested model. It is also useful for examining all possible pairwise comparisons for a 3 level categorical variable, examining intersectionality from 2 categorical variables, or for examining principal component directions.<br />
 </li>
 </ul></li>
-<li>Concisely view the estimated effect and standard errors of the original regression model, as well as any nested or rotated versions of the original regression model.</li>
+<li>Concisely view statistics from the original regression model as well as any nested or rotated versions of the original regression model. These statistics include model statistics, marginal effects, and standard errors.</li>
 </ul>
 <p>These are the core commands for performing these analyses. Additional details about options available for these commands is available at (put link here).</p>
 <ul>
